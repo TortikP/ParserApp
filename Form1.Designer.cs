@@ -28,30 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.previewLabel = new System.Windows.Forms.Label();
+            this.openXMLFile = new System.Windows.Forms.OpenFileDialog();
             this.readXML = new System.Windows.Forms.Button();
             this.readXSLT = new System.Windows.Forms.Button();
             this.xmlPath = new System.Windows.Forms.TextBox();
             this.xsltPath = new System.Windows.Forms.TextBox();
-            this.xmlView = new System.Windows.Forms.TreeView();
             this.transformXML = new System.Windows.Forms.Button();
+            this.openXSLTFile = new System.Windows.Forms.OpenFileDialog();
+            this.previewBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // label1
+            // previewLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(751, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(141, 24);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Превью файла";
+            this.previewLabel.AutoSize = true;
+            this.previewLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.previewLabel.Location = new System.Drawing.Point(751, 9);
+            this.previewLabel.Name = "previewLabel";
+            this.previewLabel.Size = new System.Drawing.Size(141, 24);
+            this.previewLabel.TabIndex = 0;
+            this.previewLabel.Text = "Превью файла";
             // 
-            // openFileDialog1
+            // openXMLFile
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.OnFileOk);
+            this.openXMLFile.Filter = "Xml files|*.xml";
+            this.openXMLFile.FileOk += new System.ComponentModel.CancelEventHandler(this.OnXmlFileOk);
             // 
             // readXML
             // 
@@ -61,6 +62,7 @@
             this.readXML.TabIndex = 1;
             this.readXML.Text = "Открыть XML";
             this.readXML.UseVisualStyleBackColor = true;
+            this.readXML.Click += new System.EventHandler(this.readXML_Click);
             // 
             // readXSLT
             // 
@@ -70,6 +72,7 @@
             this.readXSLT.TabIndex = 2;
             this.readXSLT.Text = "Открыть XSLT";
             this.readXSLT.UseVisualStyleBackColor = true;
+            this.readXSLT.Click += new System.EventHandler(this.readXSLT_Click);
             // 
             // xmlPath
             // 
@@ -89,13 +92,6 @@
             this.xsltPath.TabIndex = 4;
             this.xsltPath.Text = "путь к xslt...";
             // 
-            // xmlView
-            // 
-            this.xmlView.Location = new System.Drawing.Point(452, 36);
-            this.xmlView.Name = "xmlView";
-            this.xmlView.Size = new System.Drawing.Size(720, 500);
-            this.xmlView.TabIndex = 6;
-            // 
             // transformXML
             // 
             this.transformXML.Location = new System.Drawing.Point(755, 543);
@@ -105,18 +101,32 @@
             this.transformXML.Text = "Конвертировать";
             this.transformXML.UseVisualStyleBackColor = true;
             // 
+            // openXSLTFile
+            // 
+            this.openXSLTFile.Filter = "XSLT file|*.xsl";
+            this.openXSLTFile.FileOk += new System.ComponentModel.CancelEventHandler(this.OnXsltFileOk);
+            // 
+            // previewBox
+            // 
+            this.previewBox.Location = new System.Drawing.Point(452, 36);
+            this.previewBox.Multiline = true;
+            this.previewBox.Name = "previewBox";
+            this.previewBox.ReadOnly = true;
+            this.previewBox.Size = new System.Drawing.Size(720, 500);
+            this.previewBox.TabIndex = 8;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 761);
+            this.Controls.Add(this.previewBox);
             this.Controls.Add(this.transformXML);
-            this.Controls.Add(this.xmlView);
             this.Controls.Add(this.xsltPath);
             this.Controls.Add(this.xmlPath);
             this.Controls.Add(this.readXSLT);
             this.Controls.Add(this.readXML);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.previewLabel);
             this.Name = "Form1";
             this.Text = "XmlParser";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -126,14 +136,15 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label previewLabel;
+        private System.Windows.Forms.OpenFileDialog openXMLFile;
         private System.Windows.Forms.Button readXML;
         private System.Windows.Forms.Button readXSLT;
         private System.Windows.Forms.TextBox xmlPath;
         private System.Windows.Forms.TextBox xsltPath;
-        private System.Windows.Forms.TreeView xmlView;
         private System.Windows.Forms.Button transformXML;
+        private System.Windows.Forms.OpenFileDialog openXSLTFile;
+        private System.Windows.Forms.TextBox previewBox;
     }
 }
 
