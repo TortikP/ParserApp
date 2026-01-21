@@ -124,6 +124,11 @@
             this.previewBox.Size = new System.Drawing.Size(720, 500);
             this.previewBox.TabIndex = 8;
             // 
+            // saveXmlExport
+            // 
+            this.saveXmlExport.Filter = "Xml file|*.xml";
+            this.saveXmlExport.FileOk += new System.ComponentModel.CancelEventHandler(this.OnXmlSaveFileOk);
+            // 
             // saveExportXml
             // 
             this.saveExportXml.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));

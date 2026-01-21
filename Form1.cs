@@ -18,6 +18,8 @@ namespace ParserApp
 {
     public partial class Form1 : Form
     {
+        private XDocument newXmlFile = new XDocument();
+
         public Form1()
         {
             InitializeComponent();
@@ -53,6 +55,12 @@ namespace ParserApp
             previewBox.Text = xDocument.ToString();
         }
 
+        private void OnXmlSaveFileOk(object sender, CancelEventArgs e)
+        {
+            newXmlFile.Save(saveXmlExport.FileName);
+            
+        }
+
         private void readXML_Click(object sender, EventArgs e)
         {
             openXMLFile.ShowDialog();
@@ -69,21 +77,21 @@ namespace ParserApp
             XPathDocument xPathDoc = new XPathDocument(openXMLFile.FileName);
             XslCompiledTransform myXslTrans = new XslCompiledTransform();
             myXslTrans.Load(openXSLTFile.FileName);
-            StringWriter stringWriter = new StringWriter();
-            XmlTextWriter myWriter = new XmlTextWriter(stringWriter);
+            StringWriter strWriter = new StringWriter();
+            XmlTextWriter myWriter = new XmlTextWriter(strWriter);
 
             myXslTrans.Transform(xPathDoc, null, myWriter);
 
             myWriter.Flush();
             //Return text from string writer...
 
-            string xmlString = stringWriter.ToString();
+            string xmlString = strWriter.ToString();
             //close the Objects
             myWriter.Close();
-            stringWriter.Close();
+            strWriter.Close();
 
-            XDocument xDocument = XDocument.Parse(xmlString);
-            previewBox.Text = xDocument.ToString();
+            newXmlFile = XDocument.Parse(xmlString);
+            previewBox.Text = newXmlFile.ToString();
         }
 
 
