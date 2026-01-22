@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace ParserApp
     {
         private XDocument currentXmlFile = new XDocument();
 
-        private string currentFilePath = "";
+        private TextBox currentWorkArea;
 
         public Form1()
         {
@@ -40,15 +41,22 @@ namespace ParserApp
 
             currentXmlFile = XDocument.Parse(xmlText);
 
-            currentXmlFile.Element("Pay").Add(
-                new XAttribute("salary_sum",
-                currentXmlFile.Element("Pay")
-                .Elements("item")
-                .Sum(salary => Convert.ToDouble(salary.Attribute("amount").Value.Replace(".", ",")))
-                )
-            );
+            UpdateInitialData(currentXmlFile);
 
-            previewBox.Text = currentXmlFile.ToString();
+            xmlDataPreview.Text = currentXmlFile.ToString();
+
+            textTabs.SelectedIndex = 0;
+        }
+
+        private void UpdateInitialData(XDocument initialDataFile)
+        {
+            initialDataFile.Element("Pay").Add(
+                    new XAttribute("salary_sum",
+                    initialDataFile.Element("Pay")
+                    .Elements("item")
+                    .Sum(salary => Convert.ToDouble(salary.Attribute("amount").Value.Replace(".", ",")))
+                    )
+                );
         }
 
         private void OnXsltFileOk(object sender, CancelEventArgs e)
@@ -60,7 +68,10 @@ namespace ParserApp
             string xsltText = File.ReadAllText(xsltFilePath, Encoding.UTF8);
 
             currentXmlFile = XDocument.Parse(xsltText);
-            previewBox.Text = currentXmlFile.ToString();
+
+            xslPreview.Text = currentXmlFile.ToString();
+
+            textTabs.SelectedIndex = 1;
         }
 
         private void OnXmlSaveFileOk(object sender, CancelEventArgs e)
@@ -77,18 +88,21 @@ namespace ParserApp
         private void readXSLT_Click(object sender, EventArgs e)
         {
             openXSLTFile.ShowDialog();
-
         }
 
-        private void exportTransformedXML(object sender, EventArgs e)
+        private void OnTransformXmlClick(object sender, EventArgs e)
         {
-            XPathDocument xPathDoc = new XPathDocument(openXMLFile.FileName);
+            XmlReader xslReader = XDocument.Parse(xslPreview.Text).CreateReader();
+
+            XmlReader xmlReader = XDocument.Parse(xmlDataPreview.Text).CreateReader();
+
             XslCompiledTransform myXslTrans = new XslCompiledTransform();
-            myXslTrans.Load(openXSLTFile.FileName);
+            myXslTrans.Load(xslReader);
+
             StringWriter strWriter = new StringWriter();
             XmlTextWriter myWriter = new XmlTextWriter(strWriter);
 
-            myXslTrans.Transform(xPathDoc, null, myWriter);
+            myXslTrans.Transform(xmlReader, null, myWriter);
 
             myWriter.Flush();
             //Return text from string writer...
@@ -102,7 +116,9 @@ namespace ParserApp
 
             SummarizeSalaries();
 
-            previewBox.Text = currentXmlFile.ToString();
+            xmlTransformedPreview.Text = currentXmlFile.ToString();
+
+            textTabs.SelectedIndex = 2;
         }
 
         private void SummarizeSalaries()
@@ -122,9 +138,49 @@ namespace ParserApp
           
         }
 
-        private void saveTransformedXML(object sender, EventArgs e)
+        private void OnSaveXMLClick(object sender, EventArgs e)
         {
+            try
+            {
+                currentXmlFile = XDocument.Parse(currentWorkArea.Text);
+            }
+            catch(Exception ex)
+            {
+                ErrorMessage("Не правильный формат xml файла");
+                return;
+            }
+
             saveXmlExport.ShowDialog();
+        }
+
+
+        private void ErrorMessage(string message)
+        {
+            MessageBox.Show(message);
+        }
+
+        private void textTabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (textTabs.SelectedIndex)
+            {
+                //Initial xml data page
+                case 0:
+                    currentWorkArea = xmlDataPreview;
+                    break;
+
+                //Initial xsl data page
+                case 1:
+                    currentWorkArea = xslPreview;
+                    break;
+
+                //Initial converted data page
+                case 2:
+                    currentWorkArea = xmlTransformedPreview;
+                    break;
+                default:
+                    ErrorMessage("Нет поля с xml файлом");
+                    break;
+            }
         }
     }
 }
