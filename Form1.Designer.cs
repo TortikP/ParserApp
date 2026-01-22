@@ -40,12 +40,12 @@
             this.saveToFile = new System.Windows.Forms.Button();
             this.textTabs = new System.Windows.Forms.TabControl();
             this.xmlDataPage = new System.Windows.Forms.TabPage();
-            this.acceptChanges = new System.Windows.Forms.Button();
             this.xmlDataPreview = new System.Windows.Forms.TextBox();
             this.xsltDataPage = new System.Windows.Forms.TabPage();
             this.xslPreview = new System.Windows.Forms.TextBox();
             this.xmlTransformedPage = new System.Windows.Forms.TabPage();
             this.xmlTransformedPreview = new System.Windows.Forms.TextBox();
+            this.acceptChanges = new System.Windows.Forms.Button();
             this.onErrorPopup = new System.Windows.Forms.HelpProvider();
             this.textTabs.SuspendLayout();
             this.xmlDataPage.SuspendLayout();
@@ -165,16 +165,6 @@
             this.xmlDataPage.Text = "xmlDataPage";
             this.xmlDataPage.UseVisualStyleBackColor = true;
             // 
-            // acceptChanges
-            // 
-            this.acceptChanges.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.acceptChanges.Location = new System.Drawing.Point(740, 615);
-            this.acceptChanges.Name = "acceptChanges";
-            this.acceptChanges.Size = new System.Drawing.Size(152, 38);
-            this.acceptChanges.TabIndex = 10;
-            this.acceptChanges.Text = "Применить";
-            this.acceptChanges.UseVisualStyleBackColor = true;
-            // 
             // xmlDataPreview
             // 
             this.xmlDataPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -226,6 +216,17 @@
             this.xmlTransformedPreview.Size = new System.Drawing.Size(709, 534);
             this.xmlTransformedPreview.TabIndex = 12;
             // 
+            // acceptChanges
+            // 
+            this.acceptChanges.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.acceptChanges.Location = new System.Drawing.Point(740, 615);
+            this.acceptChanges.Name = "acceptChanges";
+            this.acceptChanges.Size = new System.Drawing.Size(152, 38);
+            this.acceptChanges.TabIndex = 10;
+            this.acceptChanges.Text = "Применить";
+            this.acceptChanges.UseVisualStyleBackColor = true;
+            this.acceptChanges.Click += new System.EventHandler(this.OnAcceptClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -242,7 +243,6 @@
             this.Controls.Add(this.previewLabel);
             this.Name = "Form1";
             this.Text = "XmlParser";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.textTabs.ResumeLayout(false);
             this.xmlDataPage.ResumeLayout(false);
             this.xmlDataPage.PerformLayout();

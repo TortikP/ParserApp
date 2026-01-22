@@ -25,12 +25,6 @@ namespace ParserApp
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-
         private void OnXmlFileOk(object sender, CancelEventArgs e)
         {
             string xmlFilePath = openXMLFile.FileName;
@@ -48,15 +42,29 @@ namespace ParserApp
             textTabs.SelectedIndex = 0;
         }
 
+        //Добавить сумму всех зарплат в атрибут salary_sum элементу Pay
         private void UpdateInitialData(XDocument initialDataFile)
         {
-            initialDataFile.Element("Pay").Add(
+            if (initialDataFile.Element("Pay").Attribute("salary_sum") == null) {
+                initialDataFile.Element("Pay").Add(
                     new XAttribute("salary_sum",
                     initialDataFile.Element("Pay")
                     .Elements("item")
                     .Sum(salary => Convert.ToDouble(salary.Attribute("amount").Value.Replace(".", ",")))
                     )
                 );
+            }
+            else
+            {
+                initialDataFile.Element("Pay").SetAttributeValue("salary_sum",
+                     initialDataFile.Element("Pay")
+                     .Elements("item")
+                     .Sum(salary => Convert.ToDouble(salary.Attribute("amount").Value.Replace(".", ","))
+                     )
+                 );
+            }
+
+
         }
 
         private void OnXsltFileOk(object sender, CancelEventArgs e)
@@ -112,6 +120,12 @@ namespace ParserApp
             myWriter.Close();
             strWriter.Close();
 
+            currentXmlFile = XDocument.Parse(xmlDataPreview.Text);
+
+            UpdateInitialData(currentXmlFile);
+
+            xmlDataPreview.Text = currentXmlFile.ToString();
+
             currentXmlFile = XDocument.Parse(xmlString);
 
             SummarizeSalaries();
@@ -121,6 +135,7 @@ namespace ParserApp
             textTabs.SelectedIndex = 2;
         }
 
+        //Суммировать зарплаты сотрудников по месяцам
         private void SummarizeSalaries()
         {
             List<XElement> employeesXml = currentXmlFile.Element("Employees").Elements("Employee").ToList();
@@ -138,11 +153,20 @@ namespace ParserApp
           
         }
 
+        private void OnAcceptClick(object sender, EventArgs e)
+        {
+            currentXmlFile = XDocument.Parse(xmlDataPreview.Text);
+
+            UpdateInitialData(currentXmlFile);
+
+            xmlDataPreview.Text = currentXmlFile.ToString();
+        }
+
         private void OnSaveXMLClick(object sender, EventArgs e)
         {
             try
             {
-                currentXmlFile = XDocument.Parse(currentWorkArea.Text);
+                currentXmlFile = XDocument.Parse(xmlDataPreview.Text);
             }
             catch(Exception ex)
             {
