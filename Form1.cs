@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Data.SqlTypes;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -91,9 +88,28 @@ namespace ParserApp
             strWriter.Close();
 
             newXmlFile = XDocument.Parse(xmlString);
+
+            SummarizeSalaries();
+
             previewBox.Text = newXmlFile.ToString();
         }
 
+        private void SummarizeSalaries()
+        {
+            List<XElement> employeesXml = newXmlFile.Element("Employees").Elements("Employee").ToList();
+            foreach (XElement employee in employeesXml )
+            {
+                double salarySum = 0;
+
+                Console.WriteLine(employee.ToString());
+
+                salarySum += employee.Elements("Salary").Sum(salary => 
+                    Convert.ToDouble(salary.Attribute("amount").Value.Replace(".", ",")));
+
+                employee.Add(new XAttribute("salary", salarySum));
+            }
+          
+        }
 
         private void saveTransformedXML(object sender, EventArgs e)
         {
