@@ -36,9 +36,14 @@
             this.xsltPath = new System.Windows.Forms.TextBox();
             this.transformXML = new System.Windows.Forms.Button();
             this.openXSLTFile = new System.Windows.Forms.OpenFileDialog();
-            this.previewBox = new System.Windows.Forms.TextBox();
             this.saveXmlExport = new System.Windows.Forms.SaveFileDialog();
             this.saveExportXml = new System.Windows.Forms.Button();
+            this.textTabs = new System.Windows.Forms.TabControl();
+            this.xmlPage = new System.Windows.Forms.TabPage();
+            this.previewBox = new System.Windows.Forms.TextBox();
+            this.employeeTablePage = new System.Windows.Forms.TabPage();
+            this.textTabs.SuspendLayout();
+            this.xmlPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // previewLabel
@@ -101,7 +106,7 @@
             // transformXML
             // 
             this.transformXML.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.transformXML.Location = new System.Drawing.Point(452, 542);
+            this.transformXML.Location = new System.Drawing.Point(452, 615);
             this.transformXML.Name = "transformXML";
             this.transformXML.Size = new System.Drawing.Size(152, 38);
             this.transformXML.TabIndex = 7;
@@ -114,25 +119,15 @@
             this.openXSLTFile.Filter = "XSLT file|*.xsl";
             this.openXSLTFile.FileOk += new System.ComponentModel.CancelEventHandler(this.OnXsltFileOk);
             // 
-            // previewBox
-            // 
-            this.previewBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.previewBox.Location = new System.Drawing.Point(452, 36);
-            this.previewBox.Multiline = true;
-            this.previewBox.Name = "previewBox";
-            this.previewBox.ReadOnly = true;
-            this.previewBox.Size = new System.Drawing.Size(720, 500);
-            this.previewBox.TabIndex = 8;
-            // 
             // saveXmlExport
             // 
-            this.saveXmlExport.Filter = "Xml file|*.xml";
+            this.saveXmlExport.Filter = "Xml file|*.xml|Xsl file|*.xsl";
             this.saveXmlExport.FileOk += new System.ComponentModel.CancelEventHandler(this.OnXmlSaveFileOk);
             // 
             // saveExportXml
             // 
             this.saveExportXml.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.saveExportXml.Location = new System.Drawing.Point(1020, 542);
+            this.saveExportXml.Location = new System.Drawing.Point(1020, 615);
             this.saveExportXml.Name = "saveExportXml";
             this.saveExportXml.Size = new System.Drawing.Size(152, 38);
             this.saveExportXml.TabIndex = 9;
@@ -140,13 +135,54 @@
             this.saveExportXml.UseVisualStyleBackColor = true;
             this.saveExportXml.Click += new System.EventHandler(this.saveTransformedXML);
             // 
+            // textTabs
+            // 
+            this.textTabs.Controls.Add(this.xmlPage);
+            this.textTabs.Controls.Add(this.employeeTablePage);
+            this.textTabs.Location = new System.Drawing.Point(452, 46);
+            this.textTabs.Name = "textTabs";
+            this.textTabs.SelectedIndex = 0;
+            this.textTabs.Size = new System.Drawing.Size(720, 563);
+            this.textTabs.TabIndex = 10;
+            // 
+            // xmlPage
+            // 
+            this.xmlPage.Controls.Add(this.previewBox);
+            this.xmlPage.Location = new System.Drawing.Point(4, 22);
+            this.xmlPage.Name = "xmlPage";
+            this.xmlPage.Padding = new System.Windows.Forms.Padding(3);
+            this.xmlPage.Size = new System.Drawing.Size(712, 537);
+            this.xmlPage.TabIndex = 0;
+            this.xmlPage.Text = "xmlPage";
+            this.xmlPage.UseVisualStyleBackColor = true;
+            // 
+            // previewBox
+            // 
+            this.previewBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.previewBox.Location = new System.Drawing.Point(0, 0);
+            this.previewBox.Multiline = true;
+            this.previewBox.Name = "previewBox";
+            this.previewBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.previewBox.Size = new System.Drawing.Size(709, 534);
+            this.previewBox.TabIndex = 0;
+            // 
+            // employeeTablePage
+            // 
+            this.employeeTablePage.Location = new System.Drawing.Point(4, 22);
+            this.employeeTablePage.Name = "employeeTablePage";
+            this.employeeTablePage.Padding = new System.Windows.Forms.Padding(3);
+            this.employeeTablePage.Size = new System.Drawing.Size(712, 537);
+            this.employeeTablePage.TabIndex = 1;
+            this.employeeTablePage.Text = "tablePage";
+            this.employeeTablePage.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 761);
+            this.Controls.Add(this.textTabs);
             this.Controls.Add(this.saveExportXml);
-            this.Controls.Add(this.previewBox);
             this.Controls.Add(this.transformXML);
             this.Controls.Add(this.xsltPath);
             this.Controls.Add(this.xmlPath);
@@ -156,6 +192,9 @@
             this.Name = "Form1";
             this.Text = "XmlParser";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.textTabs.ResumeLayout(false);
+            this.xmlPage.ResumeLayout(false);
+            this.xmlPage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -170,9 +209,12 @@
         private System.Windows.Forms.TextBox xsltPath;
         private System.Windows.Forms.Button transformXML;
         private System.Windows.Forms.OpenFileDialog openXSLTFile;
-        private System.Windows.Forms.TextBox previewBox;
         private System.Windows.Forms.SaveFileDialog saveXmlExport;
         private System.Windows.Forms.Button saveExportXml;
+        private System.Windows.Forms.TabControl textTabs;
+        private System.Windows.Forms.TabPage xmlPage;
+        private System.Windows.Forms.TabPage employeeTablePage;
+        private System.Windows.Forms.TextBox previewBox;
     }
 }
 

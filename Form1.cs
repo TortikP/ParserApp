@@ -15,7 +15,9 @@ namespace ParserApp
 {
     public partial class Form1 : Form
     {
-        private XDocument newXmlFile = new XDocument();
+        private XDocument currentXmlFile = new XDocument();
+
+        private string currentFilePath = "";
 
         public Form1()
         {
@@ -36,8 +38,17 @@ namespace ParserApp
 
             string xmlText = File.ReadAllText(xmlFilePath, Encoding.UTF8);
 
-            XDocument xDocument = XDocument.Parse(xmlText);
-            previewBox.Text = xDocument.ToString();
+            currentXmlFile = XDocument.Parse(xmlText);
+
+            currentXmlFile.Element("Pay").Add(
+                new XAttribute("salary_sum",
+                currentXmlFile.Element("Pay")
+                .Elements("item")
+                .Sum(salary => Convert.ToDouble(salary.Attribute("amount").Value.Replace(".", ",")))
+                )
+            );
+
+            previewBox.Text = currentXmlFile.ToString();
         }
 
         private void OnXsltFileOk(object sender, CancelEventArgs e)
@@ -48,13 +59,13 @@ namespace ParserApp
 
             string xsltText = File.ReadAllText(xsltFilePath, Encoding.UTF8);
 
-            XDocument xDocument = XDocument.Parse(xsltText);
-            previewBox.Text = xDocument.ToString();
+            currentXmlFile = XDocument.Parse(xsltText);
+            previewBox.Text = currentXmlFile.ToString();
         }
 
         private void OnXmlSaveFileOk(object sender, CancelEventArgs e)
         {
-            newXmlFile.Save(saveXmlExport.FileName);
+            currentXmlFile.Save(saveXmlExport.FileName);
             
         }
 
@@ -87,16 +98,16 @@ namespace ParserApp
             myWriter.Close();
             strWriter.Close();
 
-            newXmlFile = XDocument.Parse(xmlString);
+            currentXmlFile = XDocument.Parse(xmlString);
 
             SummarizeSalaries();
 
-            previewBox.Text = newXmlFile.ToString();
+            previewBox.Text = currentXmlFile.ToString();
         }
 
         private void SummarizeSalaries()
         {
-            List<XElement> employeesXml = newXmlFile.Element("Employees").Elements("Employee").ToList();
+            List<XElement> employeesXml = currentXmlFile.Element("Employees").Elements("Employee").ToList();
             foreach (XElement employee in employeesXml )
             {
                 double salarySum = 0;
